@@ -72,7 +72,7 @@ export default function SearchAppBar(props: TSearchAppBarProps) {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Avatar variant='square' src='/owl-last-library.svg' sx={{ 'marginRight': '0.5rem' }} />
+                    <Avatar variant='square' src='./owl-last-library.svg' sx={{ 'marginRight': '0.5rem' }} />
                     <Typography
                         variant="h6"
                         noWrap
