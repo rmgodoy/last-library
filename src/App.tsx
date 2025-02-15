@@ -1,4 +1,4 @@
-import { createTheme, Drawer, ThemeProvider, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper } from '@mui/material'
+import { createTheme, Drawer, ThemeProvider, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, TableContainer, TableBody, TableCell, TableRow, Table } from '@mui/material'
 import SearchAppBar from './components/AppBar';
 import './App.css'
 import { ThemeOptions } from '@mui/material/styles';
@@ -6,6 +6,8 @@ import { useState } from 'react';
 
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import ElectricBoltOutlinedIcon from '@mui/icons-material/ElectricBoltOutlined';
+import DeedCard from './features/Deeds/components/DeedCard';
+import { DeedType } from './features/Deeds/components/DeedCard/deedTypeEnum';
 
 const themeOptions: ThemeOptions = {
   palette: {
@@ -56,9 +58,18 @@ function App() {
       <Drawer sx={{ 'alignItems': 'flex-start', justifyContent: 'flex-start' }} open={isSidebarOpen} onClose={() => setIsSidebarOpen(false)}>
         {DrawerList}
       </Drawer>
-      <Paper>
-        {content == 'deeds' ? <>Deeds</> : <>Effects</>}
-      </Paper>
+      <TableContainer>
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell>
+                <DeedCard name='Cleave' type={DeedType.light} description={''} targetAndRange={'MELEE ATTACK VS. GUARD | 2 CREATURES'} base={''} hit={'Deal 2 Weapon Die Damage'} spark={'Confer weapon effect'} />
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+        {/* {content == 'deeds' ? <DeedCard name='Deed Title' /> : <>Effects</>} */}
+      </TableContainer>
     </ThemeProvider>
   )
 }
