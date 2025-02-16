@@ -13,6 +13,7 @@ export type TDeed = {
   type: EDeedType;
   targetAndRange: string;
   description?: string;
+  start?: string;
   base?: string;
   hit?: string;
   spark?: string;
@@ -99,7 +100,7 @@ export const removeData = (db: DBS, storeName: Stores, id: string) => {
   });
 };
 
-export const getStoreData = <T>(db: DBS, storeName: Stores): Promise<T[]> => {
+export const getData = <T>(db: DBS, storeName: Stores): Promise<T[]> => {
   return new Promise((resolve) => {
     const request = indexedDB.open(db);
 

@@ -8,6 +8,7 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ElectricBoltOutlinedIcon from "@mui/icons-material/ElectricBoltOutlined";
 import { ReactElement, useEffect, useState } from "react";
 import { DBS, initDB, Stores } from "../../indexDB/db";
+import deedsData from "../../../deeds.json";
 
 const themeOptions: ThemeOptions = {
   palette: {
@@ -83,7 +84,7 @@ export default function MainPage() {
   ];
 
   const contents: { [name: string]: ReactElement | undefined } = {
-    deeds: <DeedList data={[]} />,
+    deeds: <>{isDeedsDBReady && <DeedList data={deedsData} />}</>,
     effects: undefined,
     creatures: undefined,
   };

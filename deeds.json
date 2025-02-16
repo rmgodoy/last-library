@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Cleave",
+    "type": "LIGHT",
+    "targetAndRange": "MELEE ATTACK VS. GUARD | 2 CREATURES",
+    "hit": "Deal <2WD> damage.",
+    "spark": "Confer *weapon effect*."
+  },
+  {
+    "name": "Guarded Thrust",
+    "type": "LIGHT",
+    "targetAndRange": "MELEE ATTACK VS. GUARD | I CREATURE",
+    "hit": "Deal <1WD> damage. You gain a +2 bonus to guard against the target's next attack this turn.",
+    "spark": "Confer *weapon effect*."
+  },
+  {
+    "name": "Knock Back",
+    "type": "LIGHT",
+    "targetAndRange": "MELEE ATTACK VS. GUARD | I CREATURE",
+    "hit": "Deal <2WD> damage. *Push 2*.",
+    "spark": "Confer *weapon effect*."
+  },
+  {
+    "name": "Pinning Strike",
+    "type": "LIGHT",
+    "targetAndRange": "MELEE ATTACK VS. GUARD | I CREATURE",
+    "hit": "Deal <2WD> damage. If the target moves out of your melee range this round, it suffers <1WD> damage.",
+    "spark": "It suffers <2WD> damage instead."
+  },
+  {
+    "name": "Cleaving Charge",
+    "type": "HEAVY",
+    "start": "Jump up to your speed. You target each creature you pass through.",
+    "targetAndRange": "MELEE ATTACK VS. GUARD | SPECIAL",
+    "base": "Deal <2WD> damage.",
+    "hit": "Confer *weapon effect*."
+  }
+]
