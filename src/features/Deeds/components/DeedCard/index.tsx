@@ -2,15 +2,15 @@ import {
   Button,
   Accordion,
   AccordionSummary,
-  Typography,
   AccordionDetails,
   Container,
   AccordionActions,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { EDeedType } from "../../../../indexDB/db";
+import { DBS, EDeedType, Stores, upsertData } from "../../../../indexDB/db";
 import { useState } from "react";
 import EditableDeedText from "../EditableDeedText";
+import DeedTypeSelector from "../DeedTypeSelector";
 
 type TDeedCardProps = {
   id: string;
@@ -29,18 +29,51 @@ export default function DeedCard(props: TDeedCardProps) {
   const [expanded, setExpanded] = useState(false);
 
   const [name, setName] = useState<string>(props.name);
-  const [type, setType] = useState<string>(props.type);
+  const [type, setType] = useState<EDeedType>(props.type);
   const [targetAndRange, setTargetAndRange] = useState<string>(
     props.targetAndRange
   );
-  // const [description, setDescription] = useState<string>(props.description);
   const [start, setStart] = useState<string>(props.start || "");
   const [base, setBase] = useState<string>(props.base || "");
   const [hit, setHit] = useState<string>(props.hit || "");
   const [spark, setSpark] = useState<string>(props.spark || "");
 
+  const [oldName, setOldName] = useState<string>(props.name);
+  const [oldType, setOldType] = useState<EDeedType>(props.type);
+  const [oldTargetAndRange, setOldTargetAndRange] = useState<string>(
+    props.targetAndRange
+  );
+  const [oldStart, setOldStart] = useState<string>(props.start || "");
+  const [oldBase, setOldBase] = useState<string>(props.base || "");
+  const [oldHit, setOldHit] = useState<string>(props.hit || "");
+  const [oldSpark, setOldSpark] = useState<string>(props.spark || "");
+
   function onExpandChange(_event: React.SyntheticEvent, isExpanded: boolean) {
     setExpanded(isEditing ? true : isExpanded ? true : false);
+  }
+
+  function saveDeed() {
+    upsertData(DBS.Deeds, Stores.Deeds, {
+      id: props.id,
+      name,
+      type,
+      targetAndRange,
+      start,
+      base,
+      hit,
+      spark,
+    });
+  }
+
+  function onCancel() {
+    setName(oldName);
+    setType(oldType);
+    setTargetAndRange(oldTargetAndRange);
+    setStart(oldStart);
+    setBase(oldBase);
+    setHit(oldHit);
+    setSpark(oldSpark);
+    setIsEditing(false);
   }
 
   return (
@@ -48,15 +81,19 @@ export default function DeedCard(props: TDeedCardProps) {
       <Accordion expanded={expanded} onChange={onExpandChange}>
         <AccordionSummary sx={{ flexGrow: 1 }}>
           <Grid container spacing={2} width={"100%"}>
-            <Grid size={8}>
+            <Grid size={10}>
               <EditableDeedText
                 value={name}
                 isEditing={isEditing}
                 onValueChange={setName}
               />
             </Grid>
-            <Grid size={4}>
-              <Typography align="right">{type}</Typography>
+            <Grid size={2}>
+              <DeedTypeSelector
+                isEditing={isEditing}
+                type={type}
+                onChange={setType}
+              />
             </Grid>
           </Grid>
         </AccordionSummary>
@@ -70,7 +107,7 @@ export default function DeedCard(props: TDeedCardProps) {
                 onValueChange={setTargetAndRange}
               />
             </Grid>
-            {(props.start || isEditing) && (
+            {(start || isEditing) && (
               <>
                 <Grid size={1}>Start</Grid>
                 <Grid size={11}>
@@ -82,7 +119,7 @@ export default function DeedCard(props: TDeedCardProps) {
                 </Grid>
               </>
             )}
-            {(props.base || isEditing) && (
+            {(base || isEditing) && (
               <>
                 <Grid size={1}>Base</Grid>
                 <Grid size={11}>
@@ -94,7 +131,7 @@ export default function DeedCard(props: TDeedCardProps) {
                 </Grid>
               </>
             )}
-            {(props.hit || isEditing) && (
+            {(hit || isEditing) && (
               <>
                 <Grid size={1}>Hit</Grid>
                 <Grid size={11}>
@@ -107,7 +144,7 @@ export default function DeedCard(props: TDeedCardProps) {
               </>
             )}
 
-            {(props.spark || isEditing) && (
+            {(spark || isEditing) && (
               <>
                 <Grid size={1}>Spark</Grid>
                 <Grid size={11}>
@@ -122,8 +159,20 @@ export default function DeedCard(props: TDeedCardProps) {
           </Grid>
         </AccordionDetails>
         <AccordionActions>
+          {isEditing && <Button onClick={onCancel}>CANCEL</Button>}
           <Button
             onClick={() => {
+              if (isEditing) {
+                saveDeed();
+              } else {
+                setOldName(name);
+                setOldType(type);
+                setOldTargetAndRange(targetAndRange);
+                setOldStart(start);
+                setOldBase(base);
+                setOldHit(hit);
+                setOldSpark(spark);
+              }
               setIsEditing(!isEditing);
             }}
           >

@@ -1,5 +1,6 @@
 [
   {
+    "id": "1",
     "name": "Cleave",
     "type": "LIGHT",
     "targetAndRange": "MELEE ATTACK VS. GUARD | 2 CREATURES",
@@ -7,6 +8,7 @@
     "spark": "Confer *weapon effect*."
   },
   {
+    "id": "2",
     "name": "Guarded Thrust",
     "type": "LIGHT",
     "targetAndRange": "MELEE ATTACK VS. GUARD | I CREATURE",
@@ -14,6 +16,7 @@
     "spark": "Confer *weapon effect*."
   },
   {
+    "id": "3",
     "name": "Knock Back",
     "type": "LIGHT",
     "targetAndRange": "MELEE ATTACK VS. GUARD | I CREATURE",
@@ -21,6 +24,7 @@
     "spark": "Confer *weapon effect*."
   },
   {
+    "id": "4",
     "name": "Pinning Strike",
     "type": "LIGHT",
     "targetAndRange": "MELEE ATTACK VS. GUARD | I CREATURE",
@@ -28,6 +32,7 @@
     "spark": "It suffers <2WD> damage instead."
   },
   {
+    "id": "5",
     "name": "Cleaving Charge",
     "type": "HEAVY",
     "start": "Jump up to your speed. You target each creature you pass through.",

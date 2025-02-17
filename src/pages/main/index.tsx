@@ -7,8 +7,7 @@ import Sidebar, { TOptions } from "../../components/SideBar";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ElectricBoltOutlinedIcon from "@mui/icons-material/ElectricBoltOutlined";
 import { ReactElement, useEffect, useState } from "react";
-import { DBS, initDB, Stores } from "../../indexDB/db";
-import deedsData from "../../../deeds.json";
+import { DBS, getData, initDB, Stores, TDeed } from "../../indexDB/db";
 
 const themeOptions: ThemeOptions = {
   palette: {
@@ -33,6 +32,8 @@ export default function MainPage() {
   const [isEffectsDBReady, setIsEffectsDBReady] = useState(false);
   const [isCreaturesDBReady, setIsCreaturesDBReady] = useState(false);
 
+  const [deeds, setDeeds] = useState<TDeed[]>([]);
+
   const [content, setContent] = useState<string>("deeds");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -40,6 +41,10 @@ export default function MainPage() {
     if (!isDeedsDBReady) {
       initDB(DBS.Deeds, [Stores.Deeds]).then((status) => {
         setIsDeedsDBReady(status);
+
+        getData<TDeed>(DBS.Deeds, Stores.Deeds).then((data) => {
+          setDeeds(data);
+        });
       });
     }
   }, [isDeedsDBReady]);
@@ -84,7 +89,7 @@ export default function MainPage() {
   ];
 
   const contents: { [name: string]: ReactElement | undefined } = {
-    deeds: <>{isDeedsDBReady && <DeedList data={deedsData} />}</>,
+    deeds: <>{isDeedsDBReady && <DeedList data={deeds} />}</>,
     effects: undefined,
     creatures: undefined,
   };

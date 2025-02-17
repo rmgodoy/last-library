@@ -84,6 +84,33 @@ export const addData = <T>(
   });
 };
 
+export const upsertData = <T>(
+  db: DBS,
+  storeName: Stores,
+  data: T
+): Promise<T | string | null> => {
+  return new Promise((resolve) => {
+    const request = indexedDB.open(db, version);
+
+    request.onsuccess = () => {
+      const db = request.result;
+      const tx = db.transaction(storeName, "readwrite");
+      const store = tx.objectStore(storeName);
+      store.put(data);
+      resolve(data);
+    };
+
+    request.onerror = () => {
+      const error = request.error?.message;
+      if (error) {
+        resolve(error);
+      } else {
+        resolve("Unknown error");
+      }
+    };
+  });
+};
+
 export const removeData = (db: DBS, storeName: Stores, id: string) => {
   return new Promise((resolve) => {
     const request = indexedDB.open(db);

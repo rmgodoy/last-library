@@ -13,6 +13,7 @@ export default function DeedList(props: TDeedListProps) {
       {props.data.map((item) => (
         <ListItem key={item.name}>
           <DeedCard
+            id={item.id}
             name={item.name}
             type={item.type}
             description={item.description}

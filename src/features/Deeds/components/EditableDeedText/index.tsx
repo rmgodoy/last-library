@@ -39,6 +39,7 @@ export default function EditableDeedText(props: TEditableTextProps) {
         <>{parseValue(props.value)}</>
       ) : (
         <TextField
+          fullWidth={true}
           value={props.value}
           onChange={onChange}
           variant="standard"
