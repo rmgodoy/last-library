@@ -7,11 +7,10 @@ type TDeedListProps = {
 };
 
 export default function DeedList(props: TDeedListProps) {
-  // TODO: change id to use id from db
   return (
     <List>
       {props.data.map((item) => (
-        <ListItem key={item.name}>
+        <ListItem key={item.id}>
           <DeedCard
             id={item.id}
             name={item.name}
