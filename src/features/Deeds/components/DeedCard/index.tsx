@@ -7,10 +7,11 @@ import {
   AccordionActions,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { DBS, EDeedType, Stores, upsertData } from "../../../../indexDB/db";
-import { useState } from "react";
+import { DBS, EDeedType, Stores } from "../../../../indexDB/types";
+import { useContext, useState } from "react";
 import EditableDeedText from "../EditableDeedText";
 import DeedTypeSelector from "../DeedTypeSelector";
+import { IndexDbContext } from "../../../../indexDB/indexDbContext";
 
 type TDeedCardProps = {
   id: string;
@@ -25,6 +26,7 @@ type TDeedCardProps = {
 };
 
 export default function DeedCard(props: TDeedCardProps) {
+  const db = useContext(IndexDbContext);
   const [isEditing, setIsEditing] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
@@ -53,7 +55,7 @@ export default function DeedCard(props: TDeedCardProps) {
   }
 
   function saveDeed() {
-    upsertData(DBS.Deeds, Stores.Deeds, {
+    db._upsertData(DBS.Deeds, Stores.Deeds, {
       id: props.id,
       name,
       type,
@@ -76,19 +78,26 @@ export default function DeedCard(props: TDeedCardProps) {
     setIsEditing(false);
   }
 
+  function onDelete() {
+    const yes = confirm(`Do you really want to delete ${name} deed?`);
+    if (yes) {
+      db._removeData(DBS.Deeds, Stores.Deeds, props.id);
+    }
+  }
+
   return (
     <Container>
       <Accordion expanded={expanded} onChange={onExpandChange}>
         <AccordionSummary sx={{ flexGrow: 1 }}>
           <Grid container spacing={2} width={"100%"}>
-            <Grid size={10}>
+            <Grid size={{ xs: 7, sm: 8, md: 9, lg: 10 }}>
               <EditableDeedText
                 value={name}
                 isEditing={isEditing}
                 onValueChange={setName}
               />
             </Grid>
-            <Grid size={2}>
+            <Grid size={{ xs: 5, sm: 4, md: 3, lg: 1 }}>
               <DeedTypeSelector
                 isEditing={isEditing}
                 type={type}
@@ -99,8 +108,8 @@ export default function DeedCard(props: TDeedCardProps) {
         </AccordionSummary>
         <AccordionDetails>
           <Grid container spacing={2}>
-            <Grid size={1}></Grid>
-            <Grid size={11}>
+            <Grid size={2}></Grid>
+            <Grid size={10}>
               <EditableDeedText
                 value={targetAndRange}
                 isEditing={isEditing}
@@ -109,8 +118,8 @@ export default function DeedCard(props: TDeedCardProps) {
             </Grid>
             {(start || isEditing) && (
               <>
-                <Grid size={1}>Start</Grid>
-                <Grid size={11}>
+                <Grid size={2}>Start</Grid>
+                <Grid size={10}>
                   <EditableDeedText
                     value={start}
                     isEditing={isEditing}
@@ -121,8 +130,8 @@ export default function DeedCard(props: TDeedCardProps) {
             )}
             {(base || isEditing) && (
               <>
-                <Grid size={1}>Base</Grid>
-                <Grid size={11}>
+                <Grid size={2}>Base</Grid>
+                <Grid size={10}>
                   <EditableDeedText
                     value={base}
                     isEditing={isEditing}
@@ -133,8 +142,8 @@ export default function DeedCard(props: TDeedCardProps) {
             )}
             {(hit || isEditing) && (
               <>
-                <Grid size={1}>Hit</Grid>
-                <Grid size={11}>
+                <Grid size={2}>Hit</Grid>
+                <Grid size={10}>
                   <EditableDeedText
                     value={hit}
                     isEditing={isEditing}
@@ -146,8 +155,8 @@ export default function DeedCard(props: TDeedCardProps) {
 
             {(spark || isEditing) && (
               <>
-                <Grid size={1}>Spark</Grid>
-                <Grid size={11}>
+                <Grid size={2}>Spark</Grid>
+                <Grid size={10}>
                   <EditableDeedText
                     value={spark}
                     isEditing={isEditing}
@@ -159,6 +168,7 @@ export default function DeedCard(props: TDeedCardProps) {
           </Grid>
         </AccordionDetails>
         <AccordionActions>
+          {isEditing && <Button onClick={onDelete}>DELETE</Button>}
           {isEditing && <Button onClick={onCancel}>CANCEL</Button>}
           <Button
             onClick={() => {

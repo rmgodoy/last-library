@@ -1,7 +1,12 @@
+import IndexDBProvider from "./indexDB/db";
 import MainPage from "./pages/main";
 
 function App() {
-  return <MainPage></MainPage>;
+  return (
+    <IndexDBProvider>
+      <MainPage></MainPage>
+    </IndexDBProvider>
+  );
 }
 
 export default App;

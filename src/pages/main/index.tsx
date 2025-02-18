@@ -6,8 +6,9 @@ import Sidebar, { TOptions } from "../../components/SideBar";
 
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ElectricBoltOutlinedIcon from "@mui/icons-material/ElectricBoltOutlined";
-import { ReactElement, useEffect, useState } from "react";
-import { DBS, getData, initDB, Stores, TDeed } from "../../indexDB/db";
+import { ReactElement, useContext, useEffect, useState } from "react";
+import { DBS, Stores, TDeed } from "../../indexDB/types";
+import { IndexDbContext } from "../../indexDB/indexDbContext";
 
 const themeOptions: ThemeOptions = {
   palette: {
@@ -28,6 +29,8 @@ const themeOptions: ThemeOptions = {
 const theme = createTheme(themeOptions);
 
 export default function MainPage() {
+  const db = useContext(IndexDbContext);
+
   const [isDeedsDBReady, setIsDeedsDBReady] = useState(false);
   const [isEffectsDBReady, setIsEffectsDBReady] = useState(false);
   const [isCreaturesDBReady, setIsCreaturesDBReady] = useState(false);
@@ -38,30 +41,39 @@ export default function MainPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
-    if (!isDeedsDBReady) {
-      initDB(DBS.Deeds, [Stores.Deeds]).then((status) => {
-        setIsDeedsDBReady(status);
-
-        getData<TDeed>(DBS.Deeds, Stores.Deeds).then((data) => {
-          setDeeds(data);
-        });
+    if (db._getData) {
+      db._getData<TDeed>(DBS.Deeds, Stores.Deeds).then((data) => {
+        setDeeds(data);
       });
     }
-  }, [isDeedsDBReady]);
+  }, [db.modified, db]);
+
   useEffect(() => {
-    if (!isEffectsDBReady) {
-      initDB(DBS.Deeds, [Stores.Deeds]).then((status) => {
+    if (!isDeedsDBReady && db._initDB) {
+      db._initDB(DBS.Deeds, [Stores.Deeds]).then((status) => {
+        setIsDeedsDBReady(status);
+        if (db._getData) {
+          db._getData<TDeed>(DBS.Deeds, Stores.Deeds).then((data) => {
+            setDeeds(data);
+          });
+        }
+      });
+    }
+  }, [isDeedsDBReady, db]);
+  useEffect(() => {
+    if (!isEffectsDBReady && db._initDB) {
+      db._initDB(DBS.Deeds, [Stores.Deeds]).then((status) => {
         setIsEffectsDBReady(status);
       });
     }
-  }, [isEffectsDBReady]);
+  }, [isEffectsDBReady, db]);
   useEffect(() => {
-    if (!isCreaturesDBReady) {
-      initDB(DBS.Deeds, [Stores.Deeds]).then((status) => {
+    if (!isCreaturesDBReady && db._initDB) {
+      db._initDB(DBS.Deeds, [Stores.Deeds]).then((status) => {
         setIsCreaturesDBReady(status);
       });
     }
-  }, [isCreaturesDBReady]);
+  }, [isCreaturesDBReady, db]);
 
   function toggleSidebar(state?: boolean) {
     if (state !== undefined) {

@@ -1,6 +1,6 @@
 import { MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
 import { useState } from "react";
-import { EDeedType } from "../../../../indexDB/db";
+import { EDeedType } from "../../../../indexDB/types";
 
 type TDeedTypeSelectorProps = {
   type: EDeedType;
